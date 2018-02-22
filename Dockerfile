@@ -30,10 +30,9 @@ USER dev
 
 ENV EDITOR nano
 
-# Build SPIN
-# TODO REMOVE
-ENTRYPOINT ["/build/builder.py"]
-CMD ["-b"]
-
 # Use ENTRYPOINT to allow dynamic commands to run
+ENTRYPOINT ["/build/builder.py"]
+
 # Default: build all
+CMD ["-b"]
+# Anyone can easily override the command
