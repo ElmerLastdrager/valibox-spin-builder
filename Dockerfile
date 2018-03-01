@@ -36,3 +36,10 @@ ENTRYPOINT ["/build/builder.py"]
 # Default: build all
 CMD ["-b"]
 # Anyone can easily override the command
+
+# Bugs:
+# - Cannot make openwrt on macos filesystem: case insensitive.
+#   -> need to make at linux and then move final files in place
+# - Distinguish intermediate directories (cache) and final output (build)
+# - Stop on error
+# - Gebruik git reset ipv checkout (checkout alleen branch, reset juist commit). Check op sha1 hash? Kan reset branch aan?
