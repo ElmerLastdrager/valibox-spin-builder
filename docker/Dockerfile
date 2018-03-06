@@ -6,9 +6,6 @@
 # Use an official Ubuntu stable release
 FROM ubuntu:latest
 
-# Set the working directory to /app
-WORKDIR /build
-
 # Install all requirements for building SPIN
 RUN apt-get update && apt-get install -y \
     linux-generic linux-headers-generic \
@@ -23,8 +20,14 @@ RUN apt-get update && apt-get install -y \
 # Add build scripts and files to image
 ADD . /build/
 
+# Set the working directory to /app
+WORKDIR /build
+
 RUN useradd -ms /bin/bash dev &&\
     /bin/chown -R dev:dev /build
+
+# Allow scripts in container to sudo to fix permissions
+RUN echo 'build ALL=(ALL)	NOPASSWD: ALL' >>/etc/sudoers
 
 USER dev
 
@@ -36,10 +39,3 @@ ENTRYPOINT ["/build/builder.py"]
 # Default: build all
 CMD ["-b"]
 # Anyone can easily override the command
-
-# Bugs:
-# - Cannot make openwrt on macos filesystem: case insensitive.
-#   -> need to make at linux and then move final files in place
-# - Distinguish intermediate directories (cache) and final output (build)
-# - Stop on error
-# - Gebruik git reset ipv checkout (checkout alleen branch, reset juist commit). Check op sha1 hash? Kan reset branch aan?
